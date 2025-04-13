@@ -64,8 +64,10 @@ let () =
         let lexbuf = Lexing.from_channel stdin in
         let ast = Parser.prog Lexer.read lexbuf in
         match Ela.elab_infer Lir.Nil (fun _ -> None) ast with
-        | None -> failwith "Semantic checking failed due to invalid program or missing type information"
-        | Some (Ela.Ev (t, lir)) ->
+        | Ela.UndefName n -> printf "Name %s is not in scope\n" (Util.coq_to_ml_str n)
+        | Ela.NeedAnnot -> printf "Type annotation is needed\n"
+        | Ela.WrongType -> printf "Type mismatch\n"
+        | Ela.Ok (Ela.Ev (t, lir)) ->
                         dump_lir [] lir;
                         printf "\n  : ";
                         dump_typ t;

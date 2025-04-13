@@ -1,0 +1,20 @@
+(executable
+ (public_name stlc)
+ (name main))
+
+(coq.extraction
+ (prelude Extr)
+ (extracted_modules Ast Typ Ela Lir)
+ (theories STLC))
+
+(menhir
+ (modules parser))
+
+(ocamllex lexer)
+
+; something about disabling unused imports
+; which happens sometimes (Coq's Strings...)
+(env
+ (dev
+  (flags (:standard -w -33))))
+

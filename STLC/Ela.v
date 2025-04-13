@@ -1,4 +1,4 @@
-From Coq Require Import String.
+From Coq Require Import String Program.Equality.
 From STLC Require Import Typ Ast Lir.
 
 Inductive hidden (f : tp -> Type) : Type :=

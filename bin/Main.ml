@@ -2,75 +2,74 @@ open Printf
 open Stlclib
 
 let rec dump_typ : Typ.tp -> unit = function
-        | Typ.TArr (a, b) ->
-                        printf "("; dump_typ a; printf " -> "; dump_typ b; printf ")"
-        | Typ.TUnit ->
-                        printf "()"
-        | Typ.TPair (a, b) ->
-                        printf "("; dump_typ a; printf " * "; dump_typ b; printf ")"
-        | Typ.TInj (a, b) ->
-                        printf "("; dump_typ a; printf " + "; dump_typ b; printf ")"
+  | Typ.TArr (a, b) ->
+      printf "("; dump_typ a; printf " -> "; dump_typ b; printf ")"
+  | Typ.TUnit ->
+      printf "()"
+  | Typ.TPair (a, b) ->
+      printf "("; dump_typ a; printf " * "; dump_typ b; printf ")"
+  | Typ.TInj (a, b) ->
+      printf "("; dump_typ a; printf " + "; dump_typ b; printf ")"
 
 let mk_fresh : string list -> string =
-        fun live ->
-                let rec aux acc = function
-                        | [] -> sprintf "x%d" acc
-                        | x :: xs ->
-                                        if x = sprintf "x%d" acc then aux (acc + 1) live
-                                                                 else aux acc xs
-                in
-                aux 0 live
+  fun live ->
+    let rec aux acc = function
+      | [] -> sprintf "x%d" acc
+      | x :: xs ->
+          if x = sprintf "x%d" acc then aux (acc + 1) live
+                                   else aux acc xs
+    in
+    aux 0 live
 
 let rec db_lookup : 'a list -> Lir.db -> 'a =
-        fun xs d -> match (xs, d) with
-                    | (x :: _, Lir.H _) -> x
-                    | (_ :: xs, Lir.U (_, _, _, n)) -> db_lookup xs n
-                    | _ -> failwith "INVALID CONTEXT"
+  fun xs d -> match (xs, d) with
+              | (x :: _, Lir.H _) -> x
+              | (_ :: xs, Lir.U (_, _, _, n)) -> db_lookup xs n
+              | _ -> failwith "INVALID CONTEXT"
 
 let rec dump_lir : string list -> Lir.tm -> unit = fun ctx -> function
-        | Lir.Var (_, _, n) ->
-                        printf "%s" (db_lookup ctx n)
-        | Lir.Lam (_, ta, _, m) ->
-                        let x = mk_fresh ctx in
-                        printf "\\(%s : " x; dump_typ ta; printf "). "; dump_lir (x :: ctx) m
-        | Lir.App (_, _, _, f, a) ->
-                        printf "("; dump_lir ctx f; printf " "; dump_lir ctx a; printf ")"
-        | Lir.Unit _ ->
-                        printf "()"
-        | Lir.Let (_, _, _, v, e) ->
-                        let x = mk_fresh ctx in
-                        printf "(let %s = " x; dump_lir ctx v; printf " in "; dump_lir (x :: ctx) e; printf ")"
-        | Lir.Pair (_, _, _, l, r) ->
-                        printf "("; dump_lir ctx l; printf ", "; dump_lir ctx r; printf ")"
-        | Lir.Fst (_, _, _, p) ->
-                        printf "(fst "; dump_lir ctx p; printf ")"
-        | Lir.Snd (_, _, _, p) ->
-                        printf "(snd "; dump_lir ctx p; printf ")"
-        | Lir.Inl (_, tl, tr, p) ->
-                        printf "(inl "; dump_lir ctx p; printf " : "; dump_typ (Typ.TInj (tl, tr));
-                        printf ")"
-        | Lir.Inr (_, tl, tr, p) ->
-                        printf "(inr "; dump_lir ctx p; printf " : "; dump_typ (Typ.TInj (tl, tr));
-                        printf ")"
-        | Lir.Case (_, _, _, _, s, p, q) ->
-                        let x = mk_fresh ctx in
-                        let y = mk_fresh ctx in
-                        printf "(case "; dump_lir ctx s;
-                        printf " of inl %s. " x; dump_lir (x :: ctx) p;
-                        printf " | inr %s. " y; dump_lir (y :: ctx) q;
-                        printf ")"
-
+  | Lir.Var (_, _, n) ->
+      printf "%s" (db_lookup ctx n)
+  | Lir.Lam (_, ta, _, m) ->
+      let x = mk_fresh ctx in
+      printf "\\(%s : " x; dump_typ ta; printf "). "; dump_lir (x :: ctx) m
+  | Lir.App (_, _, _, f, a) ->
+      printf "("; dump_lir ctx f; printf " "; dump_lir ctx a; printf ")"
+  | Lir.Unit _ ->
+      printf "()"
+  | Lir.Let (_, _, _, v, e) ->
+      let x = mk_fresh ctx in
+      printf "(let %s = " x; dump_lir ctx v; printf " in "; dump_lir (x :: ctx) e; printf ")"
+  | Lir.Pair (_, _, _, l, r) ->
+      printf "("; dump_lir ctx l; printf ", "; dump_lir ctx r; printf ")"
+  | Lir.Fst (_, _, _, p) ->
+      printf "(fst "; dump_lir ctx p; printf ")"
+  | Lir.Snd (_, _, _, p) ->
+      printf "(snd "; dump_lir ctx p; printf ")"
+  | Lir.Inl (_, tl, tr, p) ->
+      printf "(inl "; dump_lir ctx p; printf " : "; dump_typ (Typ.TInj (tl, tr));
+      printf ")"
+  | Lir.Inr (_, tl, tr, p) ->
+      printf "(inr "; dump_lir ctx p; printf " : "; dump_typ (Typ.TInj (tl, tr));
+      printf ")"
+  | Lir.Case (_, _, _, _, s, p, q) ->
+      let x = mk_fresh ctx in
+      let y = mk_fresh ctx in
+      printf "(case "; dump_lir ctx s;
+      printf " of inl %s. " x; dump_lir (x :: ctx) p;
+      printf " | inr %s. " y; dump_lir (y :: ctx) q;
+      printf ")"
 
 let () =
-        let lexbuf = Lexing.from_channel stdin in
-        let ast = Parser.prog Lexer.read lexbuf in
-        match Ela.elab_infer Lir.Nil (fun _ -> None) ast with
-        | Ela.UndefName n -> printf "Name %s is not in scope\n" (Util.coq_to_ml_str n)
-        | Ela.NeedAnnot -> printf "Type annotation is needed\n"
-        | Ela.WrongType -> printf "Type mismatch\n"
-        | Ela.Ok (Ela.Ev (t, lir)) ->
-                        dump_lir [] lir;
-                        printf "\n  : ";
-                        dump_typ t;
-                        printf "\n"
+  match stdin |> Lexing.from_channel |> Driver.drive with
+  | Driver.Ok (t, lir) ->
+      dump_lir [] lir; printf "\n  : "; dump_typ t; printf "\n"
+  | Driver.SyntaxError msg ->
+      printf "Syntax error: %s" msg
+  | Driver.UndefName n ->
+      printf "Semantic error: Name %s is not in scope\n" n
+  | Driver.NeedAnnot ->
+      printf "Semantic error: Explicit type annotation is needed\n"
+  | Driver.WrongType ->
+      printf "Semantic error: Type mismatch\n"
 

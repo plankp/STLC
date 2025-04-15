@@ -1,5 +1,7 @@
 {
 open Parser
+
+exception LexerError of string
 }
 
 let ws = [' ' '\t' '\n' '\r']+
@@ -35,5 +37,6 @@ rule read = parse
   | "then"              { THEN }
   | "else"              { ELSE }
   | id                  { IDENT (Lexing.lexeme lexbuf) }
+  | _                   { raise (LexerError (Lexing.lexeme lexbuf)) }
   | eof                 { EOF }
 

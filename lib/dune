@@ -7,7 +7,13 @@
  (theories STLC))
 
 (menhir
- (modules parser))
+ (modules parser)
+ (flags --explain --exn-carries-state))
+
+(rule
+ (targets ParserMessages.ml)
+ (deps parser.messages parser.mly)
+ (action (with-stdout-to %{targets} (run menhir --compile-errors %{deps}))))
 
 (ocamllex lexer)
 

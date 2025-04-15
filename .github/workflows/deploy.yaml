@@ -1,0 +1,44 @@
+name: Deploy
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ocaml/setup-ocaml@v3
+        with:
+          ocaml-compiler: 4
+      - run: opam install . --deps-only
+      - run: opam exec -- dune build web
+      - name: copying built files
+        run: |
+          mkdir _site
+          mv _build/default/web/index.html _site/
+          mv _build/default/web/style.css _site/
+          mv _build/default/web/Main.bc.js _site/
+      - uses: actions/upload-pages-artifact@v3
+        id: deployment
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/deploy-pages@v4
+        id: deployment
+

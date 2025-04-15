@@ -9,7 +9,8 @@ depends: [
   "dune" {>= "3.17"}
   "menhir"
   "js_of_ocaml"
-  "coq"
+  "js_of_ocaml-ppx"
+  "coq" {= "8.20.1"}
   "odoc" {with-doc}
 ]
 build: [

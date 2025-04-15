@@ -13,7 +13,10 @@
 
 (package
  (name stlc)
- (depends ocaml dune menhir js_of_ocaml coq))
+ (depends
+   ocaml dune menhir
+   js_of_ocaml js_of_ocaml-ppx
+   (coq (= 8.20.1))))
 
 (using menhir 2.1)
 (using coq 0.8)

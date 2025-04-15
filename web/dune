@@ -1,0 +1,13 @@
+(executable
+ (name Main)
+ (libraries stlclib)
+ (modes js)
+ (preprocess (pps js_of_ocaml-ppx))
+ (js_of_ocaml
+  (compilation_mode whole_program)))
+
+; force the build process to also copy the skeleton index.html file.
+(alias
+ (name default)
+ (deps Main.bc.js index.html style.css))
+

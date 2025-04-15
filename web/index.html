@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>STLC</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<script defer src="Main.bc.js"></script>
+		<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+		<link rel="stylesheet" href="style.css">
+	</head>
+	<body>
+		<div x-data="{ message: '', code: '', result: '',
+	 	               compile() {
+		                 this.result = ''
+		                 try {
+		                   var datum = stlcLib.infer(this.code)
+		                   this.message = stlcLib.toErrMsg(datum)
+		                   this.result = stlcLib.dumpIR(datum)
+		                 } catch (e) { this.message = 'Likely a syntax error' }
+		               }
+		             }">
+			<div class="row">
+				<div class="column">
+					<textarea style="width: 95%; resize: none;" x-model="code"></textarea>
+				</div>
+				<div class="column">
+					<textarea style="width: 95%; resize: none;" x-model="result" readonly></textarea>
+				</div>
+			</div>
+			<div class="row">
+				<div class="column"><button style="width: 96%;" x-on:click="compile()">compile</button></div>
+				<div class="column"><span x-text="message"></span></div>
+			</div>
+		</div>
+	</body>
+</html>

@@ -1,4 +1,5 @@
 open Printf
+open Stlclib
 
 let rec dump_typ : Typ.tp -> unit = function
         | Typ.TArr (a, b) ->

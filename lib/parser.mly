@@ -40,8 +40,8 @@ typ:
 
 expr:
         | n = IDENT                                     { EVar (ml_to_coq_str n) }
-        | TRUE                                          { EInl EUnit }
-        | FALSE                                         { EInr EUnit }
+        | TRUE                                          { EAnn (EInl EUnit, TInj (TUnit, TUnit)) }
+        | FALSE                                         { EAnn (EInr EUnit, TInj (TUnit, TUnit)) }
         | LPAREN; RPAREN                                { EUnit }
         | LPAREN; e = expr; RPAREN                      { e }
         | LPAREN; e = expr; COLON; t = typ; RPAREN      { EAnn (e, t) }

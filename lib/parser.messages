@@ -1,0 +1,576 @@
+prog: THEN
+##
+## Ends in an error in state: 0.
+##
+## prog' -> . prog [ # ]
+##
+## The known suffix of the stack is as follows:
+##
+##
+
+Expects expression
+
+prog: SND THEN
+##
+## Ends in an error in state: 2.
+##
+## expr -> SND . expr [ TRUE THEN SND SLASH RPAREN OF LPAREN LET INR INL IN IF IDENT FST FALSE EOF ELSE COMMA COLON CASE BAR ]
+##
+## The known suffix of the stack is as follows:
+## SND
+##
+
+Expects expression
+
+prog: SLASH TRUE
+##
+## Ends in an error in state: 3.
+##
+## expr -> SLASH . lamps DOT expr [ TRUE THEN SND SLASH RPAREN OF LPAREN LET INR INL IN IF IDENT FST FALSE EOF ELSE COMMA COLON CASE BAR ]
+##
+## The known suffix of the stack is as follows:
+## SLASH
+##
+
+Expects lambda parameter
+
+prog: SLASH LPAREN TRUE
+##
+## Ends in an error in state: 4.
+##
+## lamp -> LPAREN . IDENT COLON typ RPAREN [ LPAREN IDENT DOT ]
+##
+## The known suffix of the stack is as follows:
+## LPAREN
+##
+
+Expects parameter name
+
+prog: SLASH LPAREN IDENT TRUE
+##
+## Ends in an error in state: 5.
+##
+## lamp -> LPAREN IDENT . COLON typ RPAREN [ LPAREN IDENT DOT ]
+##
+## The known suffix of the stack is as follows:
+## LPAREN IDENT
+##
+
+Expects `:'
+
+prog: SLASH LPAREN IDENT COLON TRUE
+##
+## Ends in an error in state: 6.
+##
+## lamp -> LPAREN IDENT COLON . typ RPAREN [ LPAREN IDENT DOT ]
+##
+## The known suffix of the stack is as follows:
+## LPAREN IDENT COLON
+##
+
+Expects parameter type
+
+prog: LPAREN FALSE COLON LPAREN TRUE
+##
+## Ends in an error in state: 7.
+##
+## typ -> LPAREN . RPAREN [ RPAREN PAIR INJ ARR ]
+## typ -> LPAREN . typ RPAREN [ RPAREN PAIR INJ ARR ]
+##
+## The known suffix of the stack is as follows:
+## LPAREN
+##
+
+Expects type
+
+prog: LPAREN FALSE COLON LPAREN BOOL TRUE
+##
+## Ends in an error in state: 10.
+##
+## typ -> LPAREN typ . RPAREN [ RPAREN PAIR INJ ARR ]
+## typ -> typ . ARR typ [ RPAREN PAIR INJ ARR ]
+## typ -> typ . INJ typ [ RPAREN PAIR INJ ARR ]
+## typ -> typ . PAIR typ [ RPAREN PAIR INJ ARR ]
+##
+## The known suffix of the stack is as follows:
+## LPAREN typ
+##
+
+Incomplete type
+
+prog: LPAREN FALSE COLON BOOL PAIR TRUE
+##
+## Ends in an error in state: 12.
+##
+## typ -> typ PAIR . typ [ RPAREN PAIR INJ ARR ]
+##
+## The known suffix of the stack is as follows:
+## typ PAIR
+##
+
+Expects type
+
+prog: LPAREN FALSE COLON BOOL INJ TRUE
+##
+## Ends in an error in state: 14.
+##
+## typ -> typ INJ . typ [ RPAREN PAIR INJ ARR ]
+##
+## The known suffix of the stack is as follows:
+## typ INJ
+##
+
+Expects type
+
+prog: LPAREN FALSE COLON BOOL ARR TRUE
+##
+## Ends in an error in state: 16.
+##
+## typ -> typ ARR . typ [ RPAREN PAIR INJ ARR ]
+##
+## The known suffix of the stack is as follows:
+## typ ARR
+##
+
+Expects type
+
+prog: SLASH LPAREN IDENT COLON BOOL TRUE
+##
+## Ends in an error in state: 18.
+##
+## lamp -> LPAREN IDENT COLON typ . RPAREN [ LPAREN IDENT DOT ]
+## typ -> typ . ARR typ [ RPAREN PAIR INJ ARR ]
+## typ -> typ . INJ typ [ RPAREN PAIR INJ ARR ]
+## typ -> typ . PAIR typ [ RPAREN PAIR INJ ARR ]
+##
+## The known suffix of the stack is as follows:
+## LPAREN IDENT COLON typ
+##
+
+Incomplete type
+
+prog: SLASH IDENT DOT THEN
+##
+## Ends in an error in state: 22.
+##
+## expr -> SLASH lamps DOT . expr [ TRUE THEN SND SLASH RPAREN OF LPAREN LET INR INL IN IF IDENT FST FALSE EOF ELSE COMMA COLON CASE BAR ]
+##
+## The known suffix of the stack is as follows:
+## SLASH lamps DOT
+##
+
+Expects lambda expression body
+
+prog: LPAREN THEN
+##
+## Ends in an error in state: 23.
+##
+## expr -> LPAREN . RPAREN [ TRUE THEN SND SLASH RPAREN OF LPAREN LET INR INL IN IF IDENT FST FALSE EOF ELSE COMMA COLON CASE BAR ]
+## expr -> LPAREN . expr RPAREN [ TRUE THEN SND SLASH RPAREN OF LPAREN LET INR INL IN IF IDENT FST FALSE EOF ELSE COMMA COLON CASE BAR ]
+## expr -> LPAREN . expr COLON typ RPAREN [ TRUE THEN SND SLASH RPAREN OF LPAREN LET INR INL IN IF IDENT FST FALSE EOF ELSE COMMA COLON CASE BAR ]
+## expr -> LPAREN . expr COMMA expr RPAREN [ TRUE THEN SND SLASH RPAREN OF LPAREN LET INR INL IN IF IDENT FST FALSE EOF ELSE COMMA COLON CASE BAR ]
+##
+## The known suffix of the stack is as follows:
+## LPAREN
+##
+
+Incomplete expression
+
+prog: LET TRUE
+##
+## Ends in an error in state: 25.
+##
+## expr -> LET . IDENT SET expr IN expr [ TRUE THEN SND SLASH RPAREN OF LPAREN LET INR INL IN IF IDENT FST FALSE EOF ELSE COMMA COLON CASE BAR ]
+##
+## The known suffix of the stack is as follows:
+## LET
+##
+
+Expects binder name
+
+prog: LET IDENT TRUE
+##
+## Ends in an error in state: 26.
+##
+## expr -> LET IDENT . SET expr IN expr [ TRUE THEN SND SLASH RPAREN OF LPAREN LET INR INL IN IF IDENT FST FALSE EOF ELSE COMMA COLON CASE BAR ]
+##
+## The known suffix of the stack is as follows:
+## LET IDENT
+##
+
+Expects `='
+
+prog: LET IDENT SET THEN
+##
+## Ends in an error in state: 27.
+##
+## expr -> LET IDENT SET . expr IN expr [ TRUE THEN SND SLASH RPAREN OF LPAREN LET INR INL IN IF IDENT FST FALSE EOF ELSE COMMA COLON CASE BAR ]
+##
+## The known suffix of the stack is as follows:
+## LET IDENT SET
+##
+
+Expects binder initializer
+
+prog: INR THEN
+##
+## Ends in an error in state: 28.
+##
+## expr -> INR . expr [ TRUE THEN SND SLASH RPAREN OF LPAREN LET INR INL IN IF IDENT FST FALSE EOF ELSE COMMA COLON CASE BAR ]
+##
+## The known suffix of the stack is as follows:
+## INR
+##
+
+Expects expression
+
+prog: INL THEN
+##
+## Ends in an error in state: 29.
+##
+## expr -> INL . expr [ TRUE THEN SND SLASH RPAREN OF LPAREN LET INR INL IN IF IDENT FST FALSE EOF ELSE COMMA COLON CASE BAR ]
+##
+## The known suffix of the stack is as follows:
+## INL
+##
+
+Expects expression
+
+prog: IF THEN
+##
+## Ends in an error in state: 30.
+##
+## expr -> IF . expr THEN expr ELSE expr [ TRUE THEN SND SLASH RPAREN OF LPAREN LET INR INL IN IF IDENT FST FALSE EOF ELSE COMMA COLON CASE BAR ]
+##
+## The known suffix of the stack is as follows:
+## IF
+##
+
+Expects expression
+
+prog: FST THEN
+##
+## Ends in an error in state: 32.
+##
+## expr -> FST . expr [ TRUE THEN SND SLASH RPAREN OF LPAREN LET INR INL IN IF IDENT FST FALSE EOF ELSE COMMA COLON CASE BAR ]
+##
+## The known suffix of the stack is as follows:
+## FST
+##
+
+Expects expression
+
+prog: CASE THEN
+##
+## Ends in an error in state: 34.
+##
+## expr -> CASE . expr OF option(BAR) INL IDENT DOT expr BAR INR IDENT DOT expr [ TRUE THEN SND SLASH RPAREN OF LPAREN LET INR INL IN IF IDENT FST FALSE EOF ELSE COMMA COLON CASE BAR ]
+##
+## The known suffix of the stack is as follows:
+## CASE
+##
+
+Expects expression
+
+prog: CASE FALSE THEN
+##
+## Ends in an error in state: 35.
+##
+## expr -> expr . expr [ TRUE SND SLASH OF LPAREN LET INR INL IF IDENT FST FALSE CASE ]
+## expr -> CASE expr . OF option(BAR) INL IDENT DOT expr BAR INR IDENT DOT expr [ TRUE THEN SND SLASH RPAREN OF LPAREN LET INR INL IN IF IDENT FST FALSE EOF ELSE COMMA COLON CASE BAR ]
+##
+## The known suffix of the stack is as follows:
+## CASE expr
+##
+
+Expects `of'
+
+prog: CASE FALSE OF TRUE
+##
+## Ends in an error in state: 36.
+##
+## expr -> CASE expr OF . option(BAR) INL IDENT DOT expr BAR INR IDENT DOT expr [ TRUE THEN SND SLASH RPAREN OF LPAREN LET INR INL IN IF IDENT FST FALSE EOF ELSE COMMA COLON CASE BAR ]
+##
+## The known suffix of the stack is as follows:
+## CASE expr OF
+##
+
+Expects `inl' pattern
+
+prog: CASE FALSE OF BAR TRUE
+##
+## Ends in an error in state: 38.
+##
+## expr -> CASE expr OF option(BAR) . INL IDENT DOT expr BAR INR IDENT DOT expr [ TRUE THEN SND SLASH RPAREN OF LPAREN LET INR INL IN IF IDENT FST FALSE EOF ELSE COMMA COLON CASE BAR ]
+##
+## The known suffix of the stack is as follows:
+## CASE expr OF option(BAR)
+##
+
+Expects `inl' pattern
+
+prog: CASE FALSE OF INL TRUE
+##
+## Ends in an error in state: 39.
+##
+## expr -> CASE expr OF option(BAR) INL . IDENT DOT expr BAR INR IDENT DOT expr [ TRUE THEN SND SLASH RPAREN OF LPAREN LET INR INL IN IF IDENT FST FALSE EOF ELSE COMMA COLON CASE BAR ]
+##
+## The known suffix of the stack is as follows:
+## CASE expr OF option(BAR) INL
+##
+
+Expects binder name
+
+prog: CASE FALSE OF INL IDENT TRUE
+##
+## Ends in an error in state: 40.
+##
+## expr -> CASE expr OF option(BAR) INL IDENT . DOT expr BAR INR IDENT DOT expr [ TRUE THEN SND SLASH RPAREN OF LPAREN LET INR INL IN IF IDENT FST FALSE EOF ELSE COMMA COLON CASE BAR ]
+##
+## The known suffix of the stack is as follows:
+## CASE expr OF option(BAR) INL IDENT
+##
+
+Expects `.'
+
+prog: CASE FALSE OF INL IDENT DOT THEN
+##
+## Ends in an error in state: 41.
+##
+## expr -> CASE expr OF option(BAR) INL IDENT DOT . expr BAR INR IDENT DOT expr [ TRUE THEN SND SLASH RPAREN OF LPAREN LET INR INL IN IF IDENT FST FALSE EOF ELSE COMMA COLON CASE BAR ]
+##
+## The known suffix of the stack is as follows:
+## CASE expr OF option(BAR) INL IDENT DOT
+##
+
+Expects expression
+
+prog: CASE FALSE OF INL IDENT DOT FALSE THEN
+##
+## Ends in an error in state: 42.
+##
+## expr -> expr . expr [ TRUE SND SLASH LPAREN LET INR INL IF IDENT FST FALSE CASE BAR ]
+## expr -> CASE expr OF option(BAR) INL IDENT DOT expr . BAR INR IDENT DOT expr [ TRUE THEN SND SLASH RPAREN OF LPAREN LET INR INL IN IF IDENT FST FALSE EOF ELSE COMMA COLON CASE BAR ]
+##
+## The known suffix of the stack is as follows:
+## CASE expr OF option(BAR) INL IDENT DOT expr
+##
+
+Expects `|'
+
+prog: CASE FALSE OF INL IDENT DOT FALSE BAR TRUE
+##
+## Ends in an error in state: 43.
+##
+## expr -> CASE expr OF option(BAR) INL IDENT DOT expr BAR . INR IDENT DOT expr [ TRUE THEN SND SLASH RPAREN OF LPAREN LET INR INL IN IF IDENT FST FALSE EOF ELSE COMMA COLON CASE BAR ]
+##
+## The known suffix of the stack is as follows:
+## CASE expr OF option(BAR) INL IDENT DOT expr BAR
+##
+
+Expects `inr' pattern
+
+prog: CASE FALSE OF INL IDENT DOT FALSE BAR INR TRUE
+##
+## Ends in an error in state: 44.
+##
+## expr -> CASE expr OF option(BAR) INL IDENT DOT expr BAR INR . IDENT DOT expr [ TRUE THEN SND SLASH RPAREN OF LPAREN LET INR INL IN IF IDENT FST FALSE EOF ELSE COMMA COLON CASE BAR ]
+##
+## The known suffix of the stack is as follows:
+## CASE expr OF option(BAR) INL IDENT DOT expr BAR INR
+##
+
+Expects binder name
+
+prog: CASE FALSE OF INL IDENT DOT FALSE BAR INR IDENT TRUE
+##
+## Ends in an error in state: 45.
+##
+## expr -> CASE expr OF option(BAR) INL IDENT DOT expr BAR INR IDENT . DOT expr [ TRUE THEN SND SLASH RPAREN OF LPAREN LET INR INL IN IF IDENT FST FALSE EOF ELSE COMMA COLON CASE BAR ]
+##
+## The known suffix of the stack is as follows:
+## CASE expr OF option(BAR) INL IDENT DOT expr BAR INR IDENT
+##
+
+Expects `.'
+
+prog: CASE FALSE OF INL IDENT DOT FALSE BAR INR IDENT DOT THEN
+##
+## Ends in an error in state: 46.
+##
+## expr -> CASE expr OF option(BAR) INL IDENT DOT expr BAR INR IDENT DOT . expr [ TRUE THEN SND SLASH RPAREN OF LPAREN LET INR INL IN IF IDENT FST FALSE EOF ELSE COMMA COLON CASE BAR ]
+##
+## The known suffix of the stack is as follows:
+## CASE expr OF option(BAR) INL IDENT DOT expr BAR INR IDENT DOT
+##
+
+Expects expression
+
+prog: IF FALSE SET
+##
+## Ends in an error in state: 50.
+##
+## expr -> expr . expr [ TRUE THEN SND SLASH LPAREN LET INR INL IF IDENT FST FALSE CASE ]
+## expr -> IF expr . THEN expr ELSE expr [ TRUE THEN SND SLASH RPAREN OF LPAREN LET INR INL IN IF IDENT FST FALSE EOF ELSE COMMA COLON CASE BAR ]
+##
+## The known suffix of the stack is as follows:
+## IF expr
+##
+
+Expects `then'
+
+prog: IF FALSE THEN THEN
+##
+## Ends in an error in state: 51.
+##
+## expr -> IF expr THEN . expr ELSE expr [ TRUE THEN SND SLASH RPAREN OF LPAREN LET INR INL IN IF IDENT FST FALSE EOF ELSE COMMA COLON CASE BAR ]
+##
+## The known suffix of the stack is as follows:
+## IF expr THEN
+##
+
+Expects expression
+
+prog: IF FALSE THEN FALSE THEN
+##
+## Ends in an error in state: 52.
+##
+## expr -> expr . expr [ TRUE SND SLASH LPAREN LET INR INL IF IDENT FST FALSE ELSE CASE ]
+## expr -> IF expr THEN expr . ELSE expr [ TRUE THEN SND SLASH RPAREN OF LPAREN LET INR INL IN IF IDENT FST FALSE EOF ELSE COMMA COLON CASE BAR ]
+##
+## The known suffix of the stack is as follows:
+## IF expr THEN expr
+##
+
+Expects `else'
+
+prog: IF FALSE THEN FALSE ELSE THEN
+##
+## Ends in an error in state: 53.
+##
+## expr -> IF expr THEN expr ELSE . expr [ TRUE THEN SND SLASH RPAREN OF LPAREN LET INR INL IN IF IDENT FST FALSE EOF ELSE COMMA COLON CASE BAR ]
+##
+## The known suffix of the stack is as follows:
+## IF expr THEN expr ELSE
+##
+
+Expects expression
+
+prog: LET IDENT SET FALSE THEN
+##
+## Ends in an error in state: 57.
+##
+## expr -> LET IDENT SET expr . IN expr [ TRUE THEN SND SLASH RPAREN OF LPAREN LET INR INL IN IF IDENT FST FALSE EOF ELSE COMMA COLON CASE BAR ]
+## expr -> expr . expr [ TRUE SND SLASH LPAREN LET INR INL IN IF IDENT FST FALSE CASE ]
+##
+## The known suffix of the stack is as follows:
+## LET IDENT SET expr
+##
+
+Expects `in'
+
+prog: LET IDENT SET FALSE IN THEN
+##
+## Ends in an error in state: 58.
+##
+## expr -> LET IDENT SET expr IN . expr [ TRUE THEN SND SLASH RPAREN OF LPAREN LET INR INL IN IF IDENT FST FALSE EOF ELSE COMMA COLON CASE BAR ]
+##
+## The known suffix of the stack is as follows:
+## LET IDENT SET expr IN
+##
+
+Expects expression
+
+prog: LPAREN FALSE THEN
+##
+## Ends in an error in state: 60.
+##
+## expr -> LPAREN expr . RPAREN [ TRUE THEN SND SLASH RPAREN OF LPAREN LET INR INL IN IF IDENT FST FALSE EOF ELSE COMMA COLON CASE BAR ]
+## expr -> LPAREN expr . COLON typ RPAREN [ TRUE THEN SND SLASH RPAREN OF LPAREN LET INR INL IN IF IDENT FST FALSE EOF ELSE COMMA COLON CASE BAR ]
+## expr -> LPAREN expr . COMMA expr RPAREN [ TRUE THEN SND SLASH RPAREN OF LPAREN LET INR INL IN IF IDENT FST FALSE EOF ELSE COMMA COLON CASE BAR ]
+## expr -> expr . expr [ TRUE SND SLASH RPAREN LPAREN LET INR INL IF IDENT FST FALSE COMMA COLON CASE ]
+##
+## The known suffix of the stack is as follows:
+## LPAREN expr
+##
+
+Incomplete expression
+
+prog: LPAREN FALSE COMMA THEN
+##
+## Ends in an error in state: 62.
+##
+## expr -> LPAREN expr COMMA . expr RPAREN [ TRUE THEN SND SLASH RPAREN OF LPAREN LET INR INL IN IF IDENT FST FALSE EOF ELSE COMMA COLON CASE BAR ]
+##
+## The known suffix of the stack is as follows:
+## LPAREN expr COMMA
+##
+
+Expects expression
+
+prog: LPAREN FALSE COMMA FALSE THEN
+##
+## Ends in an error in state: 63.
+##
+## expr -> LPAREN expr COMMA expr . RPAREN [ TRUE THEN SND SLASH RPAREN OF LPAREN LET INR INL IN IF IDENT FST FALSE EOF ELSE COMMA COLON CASE BAR ]
+## expr -> expr . expr [ TRUE SND SLASH RPAREN LPAREN LET INR INL IF IDENT FST FALSE CASE ]
+##
+## The known suffix of the stack is as follows:
+## LPAREN expr COMMA expr
+##
+
+Incomplete expression
+
+prog: LPAREN FALSE COLON TRUE
+##
+## Ends in an error in state: 65.
+##
+## expr -> LPAREN expr COLON . typ RPAREN [ TRUE THEN SND SLASH RPAREN OF LPAREN LET INR INL IN IF IDENT FST FALSE EOF ELSE COMMA COLON CASE BAR ]
+##
+## The known suffix of the stack is as follows:
+## LPAREN expr COLON
+##
+
+Expects type annotation
+
+prog: LPAREN FALSE COLON BOOL TRUE
+##
+## Ends in an error in state: 66.
+##
+## expr -> LPAREN expr COLON typ . RPAREN [ TRUE THEN SND SLASH RPAREN OF LPAREN LET INR INL IN IF IDENT FST FALSE EOF ELSE COMMA COLON CASE BAR ]
+## typ -> typ . ARR typ [ RPAREN PAIR INJ ARR ]
+## typ -> typ . INJ typ [ RPAREN PAIR INJ ARR ]
+## typ -> typ . PAIR typ [ RPAREN PAIR INJ ARR ]
+##
+## The known suffix of the stack is as follows:
+## LPAREN expr COLON typ
+##
+
+Incomplete type
+
+prog: SLASH IDENT TRUE
+##
+## Ends in an error in state: 69.
+##
+## lamps -> lamp . [ DOT ]
+## lamps -> lamp . lamps [ DOT ]
+##
+## The known suffix of the stack is as follows:
+## lamp
+##
+
+Expects `.' or another parameter
+
+prog: FALSE THEN
+##
+## Ends in an error in state: 73.
+##
+## expr -> expr . expr [ TRUE SND SLASH LPAREN LET INR INL IF IDENT FST FALSE EOF CASE ]
+## prog -> expr . EOF [ # ]
+##
+## The known suffix of the stack is as follows:
+## expr
+##
+
+Incomplete expression
+

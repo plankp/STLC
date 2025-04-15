@@ -23,6 +23,9 @@ open Util
 
 %start <Ast.ast> prog
 
+%on_error_reduce typ
+%on_error_reduce expr
+
 %%
 
 prog:

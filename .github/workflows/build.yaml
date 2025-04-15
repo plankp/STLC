@@ -1,11 +1,15 @@
 name: Build
-on: [commit]
+on:
+  - push
+  - pull_request
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: ocaml/setup-ocaml@v3
+        with:
+          ocaml-compiler: 4
       - run: opam install . --deps-only --with-test
       - run: opam exec -- dune build
       - run: opam exec -- dune runtest

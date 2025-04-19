@@ -1,10 +1,30 @@
-.column {
-	float: left;
-	width: 50%;
+.container {
+	display: flex;
+	flex-direction: column;
+	position: absolute;
+	top: 0;
+	left: 10px;
+	right: 10px;
+	bottom: 40px;
 }
 
-.row:after {
-	content: "";
-	display: table;
-	clear: both;
+.container-log {
+	flex-grow: 1;
+	overflow-y: scroll;
 }
+
+.container-prompt {
+	display: flex;
+	position: relative;
+}
+
+.prompt-input {
+	flex-grow: 1;
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+.prompt-output {
+	font-family: monospace;
+}
+

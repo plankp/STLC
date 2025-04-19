@@ -74,13 +74,18 @@ let dump_ir_ : Driver.result -> string = function
       Buffer.contents buf
   | _ -> ""
 
+let dump_res_ : Driver.result -> string = function
+  | Ok _ as r -> dump_ir_ r
+  | r -> to_err_msg_ r
+
 let _ =
   Js.export "stlcLib"
     (object%js (_self)
-       val name = "CamlWorld" [@@read]
+       val name = "CamlWorld"
 
        method infer = infer_
        method toErrMsg = to_err_msg_
        method dumpIR = dump_ir_
+       method dumpRes = dump_res_
      end)
 

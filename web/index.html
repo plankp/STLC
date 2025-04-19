@@ -8,27 +8,24 @@
 		<link rel="stylesheet" href="style.css">
 	</head>
 	<body>
-		<div x-data="{ message: '', code: '', result: '',
-	 	               compile() {
-		                 this.result = ''
-		                 try {
-		                   var datum = stlcLib.infer(this.code)
-		                   this.message = stlcLib.toErrMsg(datum)
-		                   this.result = stlcLib.dumpIR(datum)
-		                 } catch (e) { this.message = 'Likely a syntax error' }
-		               }
-		             }">
-			<div class="row">
-				<div class="column">
-					<textarea style="width: 95%; resize: none;" x-model="code"></textarea>
+		<div x-data="{ code: '', outputs: [], submit() { var u = this.code; var r = 'Unknown error'; this.code = ''; if (u.trim() === '') return; try { r = stlcLib.dumpRes(stlcLib.infer(u)) } catch (e) {}; this.outputs.push({ id: this.outputs.length, prompt: u, response: r }) } }">
+			<div class="container">
+				<div class="container-log">
+					<hr/>
+					<template x-for="output in outputs" :key="output.id">
+						<div>
+							<span class="prompt-output">&gt;&gt;&nbsp;</span>
+							<span class="prompt-output" x-text="output.prompt"></span>
+							<p class="prompt-output" x-text="output.response"></p>
+							<hr/>
+						</div>
+					</template>
 				</div>
-				<div class="column">
-					<textarea style="width: 95%; resize: none;" x-model="result" readonly></textarea>
+				<div class="container-prompt">
+					<span>&gt;&gt;</span>
+					<input class="prompt-input" type="text" x-model="code" @keydown.enter="submit()"></input>
+					<button x-on:click="submit()">compile</button>
 				</div>
-			</div>
-			<div class="row">
-				<div class="column"><button style="width: 96%;" x-on:click="compile()">compile</button></div>
-				<div class="column"><span x-text="message"></span></div>
 			</div>
 		</div>
 	</body>

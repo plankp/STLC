@@ -8,7 +8,7 @@
 		<link rel="stylesheet" href="style.css">
 	</head>
 	<body>
-		<div x-data="{ code: '', outputs: [], submit() { var u = this.code; var r = 'Unknown error'; this.code = ''; if (u.trim() === '') return; try { r = stlcLib.dumpRes(stlcLib.infer(u)) } catch (e) {}; this.outputs.push({ id: this.outputs.length, prompt: u, response: r }) } }">
+		<div x-data="{ code: '', outputs: [], submit() { var u = this.code; var r = 'Unknown error'; this.code = ''; if (u.trim() === '') return; try { r = stlcLib.dumpRes(stlcLib.infer(u)) } catch (e) {}; this.outputs.push({ id: this.outputs.length, prompt: u, response: r }); $nextTick(() => { document.getElementById('last').scrollIntoView() }); } }">
 			<div class="container">
 				<div class="container-log">
 					<hr/>
@@ -20,6 +20,7 @@
 							<hr/>
 						</div>
 					</template>
+					<div id="last"></div>
 				</div>
 				<div class="container-prompt">
 					<span>&gt;&gt;</span>

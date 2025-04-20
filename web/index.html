@@ -6,16 +6,69 @@
 		<script defer src="Main.bc.js"></script>
 		<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 		<link rel="stylesheet" href="style.css">
+
+		<script>
+			document.addEventListener('alpine:init', () => {
+				Alpine.data('ps', () => ({
+					code: '',
+					history: 0,
+					last_in: '',
+					outputs: [],
+
+					submit() {
+						let u = this.code
+						let r = 'Unknown error'
+						this.code = ''
+						this.last_in = ''
+						this.history = 0
+
+						if (u.trim() === '')
+							return
+
+						try {
+							r = stlcLib.dumpRes(stlcLib.infer(u))
+						} catch (e) {
+						}
+
+						this.outputs.push({
+							id: this.outputs.length,
+							prompt: u,
+							response: r
+						})
+
+						$nextTick(() => document.getElementById('last').scrollIntoView())
+					},
+
+					hist_up() {
+						if (this.history === 0)
+							this.last_in = this.code
+						if (this.history < this.outputs.length)
+							this.code = this.outputs[this.outputs.length - ++this.history].prompt
+					},
+
+					hist_down() {
+						if (this.history < 1)
+							return
+
+						this.history -= 1
+						if (this.history === 0)
+							this.code = this.last_in
+						else
+							this.code = this.outputs[this.outputs.length - this.history].prompt
+					}
+				}))
+			})
+		</script>
 	</head>
 	<body>
-		<div x-data="{ code: '', outputs: [], submit() { var u = this.code; var r = 'Unknown error'; this.code = ''; if (u.trim() === '') return; try { r = stlcLib.dumpRes(stlcLib.infer(u)) } catch (e) {}; this.outputs.push({ id: this.outputs.length, prompt: u, response: r }); $nextTick(() => { document.getElementById('last').scrollIntoView() }); } }">
+		<div x-data="ps">
 			<div class="container">
 				<div class="container-log">
 					<hr/>
 					<template x-for="output in outputs" :key="output.id">
 						<div>
 							<span class="prompt-output">&gt;&gt;&nbsp;</span>
-							<span class="prompt-output" x-text="output.prompt"></span>
+							<span class="prompt-output" x-text="output.prompt" @click="code = output.prompt"></span>
 							<p class="prompt-output" x-text="output.response"></p>
 							<hr/>
 						</div>
@@ -24,8 +77,8 @@
 				</div>
 				<div class="container-prompt">
 					<span>&gt;&gt;</span>
-					<input class="prompt-input" type="text" x-model="code" @keydown.enter="submit()"></input>
-					<button x-on:click="submit()">compile</button>
+					<input class="prompt-input" type="text" x-model="code" @keydown.enter="submit()" @keydown.up="hist_up()" @keydown.down="hist_down()"></input>
+					<button @click="submit()">compile</button>
 				</div>
 			</div>
 		</div>
